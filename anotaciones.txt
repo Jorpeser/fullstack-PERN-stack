@@ -1,1 +1,36 @@
+Fullstack Project
+
+Tecnologías:
+
+- React
+- TypeScript
+- GraphQL
+- Apollo
+- NodeJS
+- PostgreSQL
+- MikroOrm
+- Redis
+- NextJS
+- TypeGraphQL
+
+
 ORM -> MikroOrm
+
+ORM (Object Relational Mappers)
+
+    Software que nos permite interactuar con nuestra base de datos sin necesidad de conocer el lenguaje de consultas. Todo esto utilizando un paradigma orientado a objetos (con una clase, metodos y atributos [ ej: User.select(User.id).where(User.id === 1) ]). Traduce sentencias en nuestro lenguaje de programación a sentencias SQL.
+
+    PROS: 
+    
+        - La mayoría de ORMs son compatibles con distintos gestores de base de datos. Por lo que si hubiera que cambiar por ejemplo de MySQL a PostgreSQL, simplemente tendríamos que cambiar la configuración de nuestro ORM.
+
+        - Dependiendo del ORM se nos permitirá ejecutar operaciones como migraciones, transacciones(2), triggers, etc. Que resultan complejas sin un amplio conocimiento de gestion de bases de datos.
+
+    CONTRAS: 
+    
+        - Para consultas muy complejas puede que no funcione correctamente o de manera óptima por lo que tocaría hacer la consulta utilizando SQL.
+
+        - El abuso de los ORM puede hacer que nos olvidemos de SQL y saber bien SQL es muy importante.
+
+    (2) una transaccion es una interacción con la BD compuesta de varias operaciones que se deben ejecutar de una sola vez y que no permita otros cambios hasta que la transaccion haya finalizado.
+

@@ -19,16 +19,16 @@ let PostResolver = class PostResolver {
     posts({ em }) {
         return em.find(Post_1.Post, {});
     }
-    post(id, { em }) {
-        return em.findOne(Post_1.Post, { id });
+    post(Id, { em }) {
+        return em.findOne(Post_1.Post, { Id });
     }
     async createPost(title, { em }) {
         const post = em.create(Post_1.Post, { title });
         await em.persistAndFlush(post);
         return post;
     }
-    async updatePost(id, title, { em }) {
-        const post = await em.findOne(Post_1.Post, { id });
+    async updatePost(Id, title, { em }) {
+        const post = await em.findOne(Post_1.Post, { Id });
         if (!post) {
             return null;
         }
@@ -38,8 +38,8 @@ let PostResolver = class PostResolver {
         }
         return post;
     }
-    async deletePost(id, { em }) {
-        await em.nativeDelete(Post_1.Post, { id });
+    async deletePost(Id, { em }) {
+        await em.nativeDelete(Post_1.Post, { Id });
         return true;
     }
 };

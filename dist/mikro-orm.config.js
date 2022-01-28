@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("./constants");
 const path_1 = __importDefault(require("path"));
+const Thread_1 = require("./entitities/Thread");
 const Post_1 = require("./entitities/Post");
 const User_1 = require("./entitities/User");
 exports.default = {
@@ -12,7 +13,7 @@ exports.default = {
         path: path_1.default.join(__dirname, "./migrations"),
         pattern: /^[\w-]+\d+\.[tj]s$/
     },
-    entities: [Post_1.Post, User_1.User],
+    entities: [Post_1.Post, User_1.User, Thread_1.Thread],
     port: 5050,
     dbName: 'levelup',
     user: 'postgres',

@@ -15,10 +15,10 @@ export class PostResolver {
     // QUERY
     @Query(() => Post, { nullable: true })
     post( 
-        @Arg('id') id: number, 
+        @Arg('id') Id: number, 
         @Ctx() {em}: MyContext 
     ) : Promise<Post | null> {
-        return em.findOne(Post, { id });
+        return em.findOne(Post, { Id });
     }
 
     // CREATE
@@ -35,11 +35,11 @@ export class PostResolver {
     // UPDATE
     @Mutation(() => Post)
     async updatePost(
-        @Arg("id") id: number,
+        @Arg("id") Id: number,
         @Arg('title', () => String, { nullable : true }) title: string, 
         @Ctx() {em}: MyContext 
     ) : Promise<Post | null> {
-        const post = await em.findOne(Post, {id});
+        const post = await em.findOne(Post, {Id});
         if(!post) {
             return null;
         }
@@ -53,10 +53,10 @@ export class PostResolver {
     // DELETE
     @Mutation(() => Post)
     async deletePost( 
-        @Arg('id') id: number, 
+        @Arg('id') Id: number, 
         @Ctx() { em }: MyContext 
     ) : Promise<boolean> {
-        await em.nativeDelete(Post, { id })
+        await em.nativeDelete(Post, { Id })
         return true;
     }
 }

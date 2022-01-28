@@ -38,7 +38,8 @@ export class UserResolver {
     ){
         return em.find(User, {})
     }
-
+     
+    // Register
     @Mutation(() => String)
     async register(
         @Arg("options") options: UsernamePasswordInput,
@@ -86,6 +87,7 @@ export class UserResolver {
         return user;
     }
 
+    // Login
     @Mutation(() => String)
     async login(
         @Arg("options") options: UsernamePasswordInput,
