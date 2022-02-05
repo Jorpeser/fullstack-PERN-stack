@@ -14,8 +14,6 @@ Tecnologías:
 - TypeGraphQL
 
 
-ORM -> MikroOrm
-
 ORM (Object Relational Mappers)
 
     Software que nos permite interactuar con nuestra base de datos sin necesidad de conocer el lenguaje de consultas. Todo esto utilizando un paradigma orientado a objetos (con una clase, metodos y atributos [ ej: User.select(User.id).where(User.id === 1) ]). Traduce sentencias en nuestro lenguaje de programación a sentencias SQL.
@@ -34,3 +32,27 @@ ORM (Object Relational Mappers)
 
     (2) una transaccion es una interacción con la BD compuesta de varias operaciones que se deben ejecutar de una sola vez y que no permita otros cambios hasta que la transaccion haya finalizado.
 
+
+Redis (REmote DIctionary Server)
+
+    Redis es una base de datos de clave-valor que se puede utilizar para almacenar datos en forma de diccionarios.
+    El servidor de Redis envia datos al cliente. 
+    Es muy utilizada para almacenar datos en forma de cache.
+    La principal ventaja es que almacena los datos en la memoria RAM, lo que le confiere una gran velocidad.
+
+
+
+
+
+
+
+
+
+
+
+
+
+COMANDOS EJECUTADOS:
+
+yarn add redis connect-redis express-session
+yarn add -D @types/redis @types/express-session @types/connect-redis

@@ -4,6 +4,8 @@ import argon2  from 'argon2';
 import { User } from '../entitities/User';
 
 
+// InputType se usa para los argumentos de las mutations
+// ObjectType es para los tipos de datos que se devuelven
 @InputType()
 class UsernamePasswordInput {
     @Field()
@@ -40,7 +42,7 @@ export class UserResolver {
     }
      
     // Register
-    @Mutation(() => String)
+    @Mutation(() => UserResponse)
     async register(
         @Arg("options") options: UsernamePasswordInput,
         @Ctx() { em }: MyContext
@@ -73,6 +75,7 @@ export class UserResolver {
         try{
             await em.persistAndFlush(user);
         } catch(err) {
+            //duplicate username error
             if(err.code === "23505") {
                 return {
                     errors: [
@@ -84,14 +87,14 @@ export class UserResolver {
                 }
             }
         }
-        return user;
+        return { user };
     }
 
     // Login
-    @Mutation(() => String)
+    @Mutation(() => UserResponse)
     async login(
         @Arg("options") options: UsernamePasswordInput,
-        @Ctx() { em }: MyContext
+        @Ctx() { req, em }: MyContext
     ): Promise<UserResponse> {
         const user = await em.findOne(User, {username: options.username})
         if(!user){
@@ -115,6 +118,9 @@ export class UserResolver {
                 ]
             }
         }
+
+        req.session.userId = user.id;
+
         return { user }
     }
 }

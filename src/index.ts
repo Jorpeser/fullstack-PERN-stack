@@ -1,12 +1,13 @@
 // DUDAS:
 // 1. Qué es exactamente ApolloServer? 
 // 2. Qué es type-graphql y qué relación tiene con ApolloServer?
-// 3. Qué hace exactamente yarn watch (tsc watch)
+// 3. RESUELTO Qué hace exactamente yarn watch (tsc watch) -> Compila el código cada vez que se modifica un archivo?
 // 4. Qué son los decorators? (@)
 // 5. RESUELTO - Qué es el ORM?
 // 6. Qué es el Migrator?
 // 7. Qué es el EntityManager?
 // 8. Qué es el Entity?
+// 9. Qué es Redis?
 
 // Main file del server
 import { __prod__ } from "./constants";
@@ -23,18 +24,47 @@ import { PostResolver } from "./resolvers/post";
 import { UserResolver } from "./resolvers/user";
 import { ThreadResolver } from "./resolvers/thread";
 
+import * as redis from 'redis';
+import session from 'express-session';
+//import { MyContext } from "./types"; 
+import connectRedis from 'connect-redis';
+
+
 const main = async () => {
     const orm = await MikroORM.init(mikroConfig);
     await orm.getMigrator().up() // runs migrations Necesita explicacion
     
     const app = express();
     
+    const RedisStore = connectRedis(session);
+    //let RedisStore = require('connect-redis')(session); //-> Se convierte al import de arriba y se llama a la funcion con parametro session.
+    const redisClient = redis.createClient();
+
+    app.use(
+        session({
+            name: "qid", // nombre de la cookie
+            store: new RedisStore({ 
+                disableTouch: true, // para que no se actualice la cookie cada vez que se haga una petición
+                client: redisClient
+            }),
+            cookie: {
+                maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
+                httpOnly: true, // hace la cookie inaccesible desde el frontend
+                secure: __prod__, // hace que la cookie solo funcione en https
+                sameSite: "lax" // csrf (cross site request forgery)
+            },
+            secret: "muchapoliciapocadiversion", // firma de la cookie
+            resave: false,
+            saveUninitialized: false
+        })
+    );
+
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
             resolvers: [PostResolver, UserResolver, ThreadResolver],
             validate: false
         }),
-        context: () => ({ em: orm.em })
+        context: ({req, res}) => ({ em: orm.em, req, res })
     });
 
     await apolloServer.start()
