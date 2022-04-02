@@ -34,6 +34,21 @@ class UserResponse {
 @Resolver(User)
 export class UserResolver {
 
+    @Query(() => User, {nullable: true})
+    async me(
+        @Ctx() { req, em } : MyContext
+    ) {
+        console.log(JSON.stringify(req.session, null, 4))
+
+        if(!req.session.userId){
+            //console.log("req.session.userId === null")
+            return null;
+        }
+        //console.log("(ME) req.session.userId === " + req.session.userId)
+        const user = await em.findOne(User, req.session.userId);
+        return user;
+    }
+
     @Query(() => [User])
     getUsers(
         @Ctx() { em }: MyContext
@@ -45,7 +60,7 @@ export class UserResolver {
     @Mutation(() => UserResponse)
     async register(
         @Arg("options") options: UsernamePasswordInput,
-        @Ctx() { em }: MyContext
+        @Ctx() { em, req }: MyContext
     ){
         if(options.username.length <= 2) {
             return {
@@ -87,6 +102,10 @@ export class UserResolver {
                 }
             }
         }
+
+        //Set cookie on the user the keep him logged in
+        req.session.userId = user.id;
+
         return { user };
     }
 
@@ -96,6 +115,7 @@ export class UserResolver {
         @Arg("options") options: UsernamePasswordInput,
         @Ctx() { req, em }: MyContext
     ): Promise<UserResponse> {
+        //console.log("Hola")
         const user = await em.findOne(User, {username: options.username})
         if(!user){
             return {
@@ -118,8 +138,20 @@ export class UserResolver {
                 ]
             }
         }
-
+        
+        //console.log('USER_ID ==== ' + user.id)
+        
         req.session.userId = user.id;
+        
+        req.session.save(err => {
+            if(err){
+                console.log(err)
+            }
+            return { user }
+        })
+
+        //console.log('REQ_SESSION_USER_ID ==== ' + req.session.userId)
+        //console.log(JSON.stringify(req.session, null, 4))
 
         return { user }
     }

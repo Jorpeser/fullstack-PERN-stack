@@ -59,6 +59,14 @@ UserResponse = __decorate([
     (0, type_graphql_1.ObjectType)()
 ], UserResponse);
 let UserResolver = class UserResolver {
+    async me({ req, em }) {
+        console.log(JSON.stringify(req.session, null, 4));
+        if (!req.session.userId) {
+            return null;
+        }
+        const user = await em.findOne(User_1.User, req.session.userId);
+        return user;
+    }
     getUsers({ em }) {
         return em.find(User_1.User, {});
     }
@@ -129,9 +137,22 @@ let UserResolver = class UserResolver {
             };
         }
         req.session.userId = user.id;
+        req.session.save(err => {
+            if (err) {
+                console.log(err);
+            }
+            return { user };
+        });
         return { user };
     }
 };
+__decorate([
+    (0, type_graphql_1.Query)(() => User_1.User, { nullable: true }),
+    __param(0, (0, type_graphql_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "me", null);
 __decorate([
     (0, type_graphql_1.Query)(() => [User_1.User]),
     __param(0, (0, type_graphql_1.Ctx)()),
