@@ -1,0 +1,41 @@
+ORDEN DE ACONTECIMIENTOS:
+
+1
+- Creamos el frontend con nextJS react y chakra-userId
+$ yarn create next-app --example with-chakra-ui nombre_de_la_carpeta
+
+2
+- Instalamos los tipos de typescript para nuestro proyecto
+$ yarn add --dev typescript @types/node
+
+3
+- Instalamos Formik --> Libreria de forms para React
+$ yarn add formik
+
+4
+- Vamos a instalar urql para hacer queries a la base de datos
+- URQL es un cliente de GraphQL para react (o vue o js o...)
+$ yarn add urql graphql
+
+5
+- Instalaremos GraphQL Code Generator
+- GraphQL Code Generator mirará nuestras queries de GraphQL y generará los tipos de TS además de Hooks URQL que usaremos
+$ yarn add -D @graphql-codegen/cli
+- Lanzamos un wizard para configurarlo
+$ yarn graphql-codegen init
+- Añadimos plugin para urql
+$ yarn add -D @graphql-codegen/typescript-urql
+- Es conveniente retirar de package.json @graphql-codegen/typescript-react-apollo para evitar conflictos.
+- También deberemos cambiar en codegen.yml react-apollo por urql
+
+- A partir de este punto tendremos los requests (queries y mutations) en el directorio graphql con la extension .graphql
+- Tras hacer cualquier cambio en los ficheros de /graphql tendremos que generar los TS con el comando:
+$ yarn gen ($ "yarn graphql-codegen --config codegen.yml")
+-----------------------------------------------------------------------
+
+Como vamos a estar usando React, la extension de nuestros ficheros será .tsx, que combina JSX y TS
+
+------------------------------------------------------------------------
+NextJS
+
+- Los ficheros que haya en /pages serán los que se renderizan en la página bajo la ruta /nombre_del_fichero (ejemplo: localhost:3000/register)

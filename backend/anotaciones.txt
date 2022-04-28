@@ -1,0 +1,90 @@
+Fullstack Project
+
+Tecnologías:
+
+- React
+- TypeScript
+- GraphQL
+- Apollo
+- NodeJS
+- PostgreSQL
+- MikroOrm
+- Redis
+- NextJS
+- TypeGraphQL
+
+
+ORM (Object Relational Mappers)
+
+    Software que nos permite interactuar con nuestra base de datos sin necesidad de conocer el lenguaje de consultas. Todo esto utilizando un paradigma orientado a objetos (con una clase, metodos y atributos [ ej: User.select(User.id).where(User.id === 1) ]). Traduce sentencias en nuestro lenguaje de programación a sentencias SQL.
+
+    PROS: 
+    
+        - La mayoría de ORMs son compatibles con distintos gestores de base de datos. Por lo que si hubiera que cambiar por ejemplo de MySQL a PostgreSQL, simplemente tendríamos que cambiar la configuración de nuestro ORM.
+
+        - Dependiendo del ORM se nos permitirá ejecutar operaciones como migraciones, transacciones(2), triggers, etc. Que resultan complejas sin un amplio conocimiento de gestion de bases de datos.
+
+    CONTRAS: 
+    
+        - Para consultas muy complejas puede que no funcione correctamente o de manera óptima por lo que tocaría hacer la consulta utilizando SQL.
+
+        - El abuso de los ORM puede hacer que nos olvidemos de SQL y saber bien SQL es muy importante.
+
+    (2) una transaccion es una interacción con la BD compuesta de varias operaciones que se deben ejecutar de una sola vez y que no permita otros cambios hasta que la transaccion haya finalizado.
+
+
+Redis (REmote DIctionary Server)
+
+    Redis es una base de datos de clave-valor que se puede utilizar para almacenar datos en forma de diccionarios.
+    El servidor de Redis envia datos al cliente. 
+    Es muy utilizada para almacenar datos en forma de cache.
+    La principal ventaja es que almacena los datos en la memoria RAM, lo que le confiere una gran velocidad.
+
+
+-------------------------------------------
+
+Downgrade de Redis y @types/redis
+Downgrade de express-session
+
+-------------------------------------------
+
+
+COMANDOS EJECUTADOS:
+
+yarn add redis connect-redis express-session
+yarn add -D @types/redis @types/express-session @types/connect-redis
+
+
+
+--------------------------------------------
+PASOS DE SESSION
+
+req.session.userId = user.id
+{ userId: 1} -> lo envia a redis
+
+1 
+se guarda en redis
+sess: yoiueyroqiewuy -> { userId:1  }
+
+2
+express-session pondrá una cookie en el navegador iuewyreir423yeio
+
+3
+cuando el user hace una peticion la cookie
+iuewyreir423yeio -> se envia al server
+
+4
+el server decripta la cookie con el secret que tenga
+iuewyreir423yeio -> sess: yoiueyroqiewuy
+
+5
+hace una peticion a redis 
+sess: yoiueyroqiewuy -> { userId: 1 }
+
+6
+se guarda { userId: 1 } en req.session
+
+
+
+------------- CREAR QUERY BUILDER -------------
+Cuando hay problemas con el orm y no se puede hacer una consulta SQL, se puede utilizar el Query Builder. Haremos las cosas manualmente, como se haría sin ORM. Se utilizará una función createQueryBuilder() y knexquery.
