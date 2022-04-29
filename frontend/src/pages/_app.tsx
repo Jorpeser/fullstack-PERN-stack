@@ -3,7 +3,7 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import { Cache, cacheExchange, QueryInput } from '@urql/exchange-graphcache'
 import { Provider, createClient, fetchExchange, dedupExchange } from 'urql'
-import { LoginMutation, MeDocument, MeQuery, Query, RegisterMutation } from '../generated/graphql'
+import { LoginMutation, LogoutMutation, MeDocument, MeQuery, Query, RegisterMutation } from '../generated/graphql'
 import theme from '../theme'
 
 // Revisar y estudiar bien que hace esta función 3:30:00 benawad
@@ -55,6 +55,14 @@ const client = createClient({
                 }
               }
             }
+          );
+        },
+        logout: (_result, args, cache, info) => {
+          auxUpdateQuery<LogoutMutation, MeQuery>(
+            cache,
+            { query: MeDocument },
+            _result,
+            () => ({ me: null })
           );
         }
       }

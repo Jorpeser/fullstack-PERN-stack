@@ -10,7 +10,7 @@
 // 9. RESUELTO - Qué es Redis?
 
 // Main file del server
-import { __prod__ } from "./constants";
+import { COOKIE_NAME, __prod__ } from "./constants";
 
 import { MikroORM } from "@mikro-orm/core";
 import mikroConfig from "./mikro-orm.config"
@@ -61,7 +61,7 @@ const main = async () => {
     
     app.use(
         session({
-            name: "micookie", // nombre de la cookie
+            name: COOKIE_NAME, // nombre de la cookie
             secret: "muchapoliciapocadiversion", // firma de la cookie
             store: new RedisStore({ 
                 disableTouch: true, // para que no se actualice la cookie cada vez que se haga una petición

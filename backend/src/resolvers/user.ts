@@ -3,6 +3,7 @@ import { MyContext } from '../types';
 import argon2  from 'argon2';
 import { User } from '../entitities/User';
 import { EntityManager } from '@mikro-orm/postgresql';
+import { COOKIE_NAME } from '../constants';
 
 
 // InputType se usa para los argumentos de las mutations
@@ -35,6 +36,7 @@ class UserResponse {
 @Resolver(User)
 export class UserResolver {
 
+    // Me
     @Query(() => User, {nullable: true})
     async me(
         @Ctx() { req, em } : MyContext
@@ -50,6 +52,7 @@ export class UserResolver {
         return user;
     }
 
+    // GetUsers
     @Query(() => [User])
     getUsers(
         @Ctx() { em }: MyContext
@@ -162,5 +165,23 @@ export class UserResolver {
         })
 
         return { user }
+    }
+
+    // Logout
+    @Mutation(() => Boolean)
+    async logout(
+        @Ctx() { req, res }: MyContext
+    ){
+        return new Promise((resolve) => {
+            req.session.destroy(err => {
+                res.clearCookie(COOKIE_NAME);
+                if(err) {
+                    console.log(err);
+                    resolve(false)
+                    return;
+                }
+                resolve(true);
+            });
+        });
     }
 }
