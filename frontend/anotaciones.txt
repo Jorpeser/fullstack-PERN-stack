@@ -31,6 +31,10 @@ $ yarn add -D @graphql-codegen/typescript-urql
 - A partir de este punto tendremos los requests (queries y mutations) en el directorio graphql con la extension .graphql
 - Tras hacer cualquier cambio en los ficheros de /graphql tendremos que generar los TS con el comando:
 $ yarn gen ($ "yarn graphql-codegen --config codegen.yml")
+
+- Instalaremos graphcache por que necesitaremos cachear via Exchanges. (Explicar mejor por qué https://formidable.com/open-source/urql/docs/graphcache/) 
+$ yarn add @urql/exchange-graphcache
+
 -----------------------------------------------------------------------
 
 Como vamos a estar usando React, la extension de nuestros ficheros será .tsx, que combina JSX y TS
