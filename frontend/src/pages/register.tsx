@@ -29,6 +29,7 @@ const Register: React.FC<registerProps> = ({ }) => {
                     // Redireccionar a /
                     router.push("/");
                 }
+                
             }}
         >
             {({ isSubmitting }) => (

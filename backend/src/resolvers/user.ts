@@ -161,9 +161,6 @@ export class UserResolver {
             return { user }
         })
 
-        //console.log('REQ_SESSION_USER_ID ==== ' + req.session.userId)
-        //console.log(JSON.stringify(req.session, null, 4))
-
         return { user }
     }
 }
