@@ -35,6 +35,10 @@ $ yarn gen ($ "yarn graphql-codegen --config codegen.yml")
 - Instalaremos graphcache por que necesitaremos cachear via Exchanges. (Explicar mejor por qué https://formidable.com/open-source/urql/docs/graphcache/) 
 $ yarn add @urql/exchange-graphcache
 
+- Renderizado en servidor NextJS urql benawad 3:50:00
+- Usaremos next-urql
+$ yarn add next-urql react-is
+
 -----------------------------------------------------------------------
 
 Como vamos a estar usando React, la extension de nuestros ficheros será .tsx, que combina JSX y TS
@@ -43,3 +47,16 @@ Como vamos a estar usando React, la extension de nuestros ficheros será .tsx, q
 NextJS
 
 - Los ficheros que haya en /pages serán los que se renderizan en la página bajo la ruta /nombre_del_fichero (ejemplo: localhost:3000/register)
+
+URQL (Universal React Query Library)
+
+
+
+
+------------
+SSR 
+ 1 - yo hago un rquest al navegador http://localhost:3000/
+ 2  -> hará el request a next.js
+ 3  -> que hara el request a graphql en el server localhost:4001
+ 4  -> construye el el html
+ 5 ->  lo envía al navegador

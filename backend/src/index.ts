@@ -93,7 +93,7 @@ const main = async () => {
     apolloServer.applyMiddleware({ app, cors: false });
     
     app.listen(4001, () => {
-        console.log('server started on localhost:4001')
+        console.log('server started on localhost:4000')
     })
     
 };

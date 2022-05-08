@@ -6,6 +6,8 @@ import { Box, Button } from '@chakra-ui/react';
 import { useLoginMutation } from '../generated/graphql';
 import { useRouter } from 'next/router';
 import { toErrorMap } from '../utils/toErrorMap';
+import { withUrqlClient } from 'next-urql';
+import { createUrqlClient } from '../utils/createUrqlClient';
 
 interface loginProps {}
 
@@ -47,4 +49,8 @@ const Login: React.FC<loginProps> = ({}) => {
     );
 }
 
-export default Login;
+export default withUrqlClient(createUrqlClient)(Login);
+// Si queremos que nuestra pagina/componente acceda a Urlq, debemos exportarlo con el withUrqlClient
+// además, añadiendo el segundo argumento a la función createUrqlClient {ssr: true} podemos activarle el server side rendering
+
+
