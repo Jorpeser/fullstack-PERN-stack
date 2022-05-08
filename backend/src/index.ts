@@ -34,8 +34,11 @@ import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-co
 
 import cors from 'cors';
 
-
 const main = async () => {
+
+    //sendEmail('pepe@pepe.com', 'Hola, esto es un email de prueba');
+    //orm.em.nativeDelete(User, {}) // Borra todos los users
+
     const orm = await MikroORM.init(mikroConfig);
     await orm.getMigrator().up() // runs migrations Necesita explicacion
     

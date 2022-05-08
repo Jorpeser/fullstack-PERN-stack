@@ -1,20 +1,12 @@
-import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver} from 'type-graphql';
+import { Arg, Ctx, Field, Mutation, ObjectType, Query, Resolver} from 'type-graphql';
 import { MyContext } from '../types';
 import argon2  from 'argon2';
 import { User } from '../entitities/User';
 import { EntityManager } from '@mikro-orm/postgresql';
 import { COOKIE_NAME } from '../constants';
+import { UsernamePasswordInput } from './UsernamePasswordInput';
+import { validateRegister } from '../validators/validateRegister';
 
-
-// InputType se usa para los argumentos de las mutations
-// ObjectType es para los tipos de datos que se devuelven
-@InputType()
-class UsernamePasswordInput {
-    @Field()
-    username: string;
-    @Field()
-    password: string;
-}
 
 @ObjectType()
 class FieldError {
@@ -66,26 +58,9 @@ export class UserResolver {
         @Arg("options") options: UsernamePasswordInput,
         @Ctx() { em, req }: MyContext
     ){
-        if(options.username.length <= 2) {
-            return {
-                errors: [
-                    {
-                        field: "username",
-                        message: "Length must be greater than 2"
-                    }
-                ]
-            }
-        }
-
-        if(options.password.length <= 3){
-            return {
-                errors: [
-                    {
-                        field: "password",
-                        message: "Length must be greater than 3"
-                    }
-                ]
-            }
+        const errors = validateRegister(options);
+        if(errors) {
+            return { errors };
         }
 
         const hashedPassword = await argon2.hash(options.password)
@@ -97,6 +72,7 @@ export class UserResolver {
                 .getKnexQuery()
                 .insert({
                     username: options.username,
+                    email: options.email,
                     password: hashedPassword,
                     created_at: new Date(),
                     updated_at: new Date()
@@ -105,14 +81,26 @@ export class UserResolver {
             user = result[0];
         } catch(err) {
             //duplicate username error
+            console.log(err)
             if(err.code === "23505") {
-                return {
-                    errors: [
-                        {
-                            field: "username",
-                            message: "Username already taken"
-                        }
-                    ]
+                if(err.detail.includes("email")) {
+                    return {
+                        errors: [
+                            {
+                                field: "email",
+                                message: "Email already registered"
+                            }
+                        ]
+                    }
+                } else if(err.detail.includes("username")) {
+                    return {
+                        errors: [
+                            {
+                                field: "username",
+                                message: "Username already taken"
+                            }
+                        ]
+                    }
                 }
             }
         }
@@ -126,22 +114,25 @@ export class UserResolver {
     // Login
     @Mutation(() => UserResponse)
     async login(
-        @Arg("options") options: UsernamePasswordInput,
+        @Arg("usernameOrEmail") usernameOrEmail: string,
+        @Arg("password") password: string,
         @Ctx() { req, em }: MyContext
     ): Promise<UserResponse> {
-        //console.log("Hola")
-        const user = await em.findOne(User, {username: options.username})
+        const user = await em.findOne(User, usernameOrEmail.includes("@") 
+            ? { email: usernameOrEmail } 
+            : { username: usernameOrEmail }
+        );
         if(!user){
             return {
                 errors: [
                     {
-                        field: 'username',
+                        field: 'usernameOrEmail',
                         message: "That username doesn't exist"
                     }
                 ]
             }
         }
-        const valid = await argon2.verify(user.password, options.password)
+        const valid = await argon2.verify(user.password, password)
         if(!valid){
             return {
                 errors: [

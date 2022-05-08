@@ -21,23 +21,26 @@ const Register: React.FC<registerProps> = ({ }) => {
 
     return (
         <Formik
-            initialValues={{ username: "", password: "" }}
-            onSubmit={ async (values, {setErrors}) => {
-                console.log(values);
-                const response = await register(values);
-                if(response.data?.register.errors) {
-                    setErrors(toErrorMap(response.data.register.errors));
-                } else if (response.data?.register.user) {
-                    // Redireccionar a /
-                    router.push("/");
+            initialValues={{ username: "", email: "", password: "" }}
+            onSubmit={   
+                async (values, {setErrors}) => {
+                    const response = await register({options: values});
+                    if(response.data?.register.errors) {
+                        setErrors(toErrorMap(response.data.register.errors));
+                    } else if (response.data?.register.user) {
+                        // Redireccionar a /
+                        router.push("/");
+                    }                    
                 }
-                
-            }}
+            }
         >
             {({ isSubmitting }) => (
                 <Wrapper variant='small'>
                     <Form>
                         <InputField name="username" label="Username" placeholder='username' />
+                        <Box mt={4}>
+                            <InputField name="email" label="Email" />
+                        </Box>
                         <Box mt={4}>
                             <InputField name="password" label="Password" type="password"/>
                         </Box>
