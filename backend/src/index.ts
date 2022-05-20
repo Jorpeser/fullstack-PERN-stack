@@ -24,7 +24,7 @@ import { PostResolver } from "./resolvers/post";
 import { UserResolver } from "./resolvers/user";
 import { ThreadResolver } from "./resolvers/thread";
 
-import * as redis from 'redis';
+import Redis from 'ioredis';
 import session from 'express-session';
 //import { MyContext } from "./types"; 
 import connectRedis from 'connect-redis';
@@ -33,6 +33,7 @@ import connectRedis from 'connect-redis';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 
 import cors from 'cors';
+//import { sendEmail } from "./utils/sendEmail";
 
 const main = async () => {
 
@@ -46,9 +47,9 @@ const main = async () => {
     
     const RedisStore = connectRedis(session);
     //let RedisStore = require('connect-redis')(session); //-> Se convierte al import de arriba y se llama a la funcion con parametro session.
-    const redisClient = redis.createClient();
+    const redis = new Redis({});
 
-    redisClient.on('connect', (_) => {
+    redis.on('connect', (_) => {
         console.log('Redis client connected');
     })
 
@@ -68,7 +69,7 @@ const main = async () => {
             secret: "muchapoliciapocadiversion", // firma de la cookie
             store: new RedisStore({ 
                 disableTouch: true, // para que no se actualice la cookie cada vez que se haga una petición
-                client: redisClient
+                client: redis
             }),
             cookie: {
                 maxAge: 1000 * 60 * 60 * 24 * 365 * 1, // 1 year
@@ -89,7 +90,7 @@ const main = async () => {
         plugins : [
             ApolloServerPluginLandingPageGraphQLPlayground({}) 
         ],
-        context: ({req, res}) => ({ em: orm.em, req, res })
+        context: ({req, res}) => ({ em: orm.em, req, res, redis })
     });
 
     await apolloServer.start()

@@ -6,7 +6,7 @@ import { createUrqlClient } from "../utils/createUrqlClient";
 
 
 const Index = () => {
-    const [{data}] = usePostsQuery();
+    const [{ data }] = usePostsQuery();
 
     return (
         <>
@@ -22,4 +22,4 @@ const Index = () => {
     )
 };
 
-export default withUrqlClient(createUrqlClient, {ssr: true})(Index);
+export default withUrqlClient(createUrqlClient, { ssr: true })(Index);

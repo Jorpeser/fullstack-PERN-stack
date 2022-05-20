@@ -54,7 +54,7 @@ COMANDOS EJECUTADOS:
 yarn add redis connect-redis express-session
 yarn add -D @types/redis @types/express-session @types/connect-redis
 
-
+yarn add uuid ioredis
 
 --------------------------------------------
 PASOS DE SESSION

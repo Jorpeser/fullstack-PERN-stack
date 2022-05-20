@@ -58,8 +58,6 @@ NextJS
 URQL (Universal React Query Library)
 
 
-
-
 ------------
 SSR 
  1 - yo hago un rquest al navegador http://localhost:3000/
