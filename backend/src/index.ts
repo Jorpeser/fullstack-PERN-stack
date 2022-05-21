@@ -12,8 +12,8 @@
 // Main file del server
 import { COOKIE_NAME, __prod__ } from "./constants";
 
-import { MikroORM } from "@mikro-orm/core";
-import mikroConfig from "./mikro-orm.config"
+//import { MikroORM } from "@mikro-orm/core";
+//import mikroConfig from "./mikro-orm.config"
 
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
@@ -33,6 +33,8 @@ import connectRedis from 'connect-redis';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 
 import cors from 'cors';
+
+import AppDataSource from "./type-orm.config";
 //import { sendEmail } from "./utils/sendEmail";
 
 const main = async () => {
@@ -40,8 +42,11 @@ const main = async () => {
     //sendEmail('pepe@pepe.com', 'Hola, esto es un email de prueba');
     //orm.em.nativeDelete(User, {}) // Borra todos los users
 
-    const orm = await MikroORM.init(mikroConfig);
-    await orm.getMigrator().up() // runs migrations Necesita explicacion
+    //const orm = await MikroORM.init(mikroConfig);
+    //await orm.getMigrator().up() // runs migrations Necesita explicacion
+
+    //const conn = await AppDataSource.initialize().catch(err => console.log(err));
+    await AppDataSource.initialize().catch(err => console.log(err));
     
     const app = express();
     
@@ -90,7 +95,7 @@ const main = async () => {
         plugins : [
             ApolloServerPluginLandingPageGraphQLPlayground({}) 
         ],
-        context: ({req, res}) => ({ em: orm.em, req, res, redis })
+        context: ({req, res}) => ({ req, res, redis })
     });
 
     await apolloServer.start()
