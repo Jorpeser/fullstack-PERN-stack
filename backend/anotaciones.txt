@@ -8,7 +8,7 @@ Tecnologías:
 - Apollo
 - NodeJS
 - PostgreSQL
-- MikroOrm
+- typeOrm
 - Redis
 - NextJS
 - TypeGraphQL
@@ -87,4 +87,7 @@ se guarda { userId: 1 } en req.session
 
 
 ------------- CREAR QUERY BUILDER -------------
-Cuando hay problemas con el orm y no se puede hacer una consulta SQL, se puede utilizar el Query Builder. Haremos las cosas manualmente, como se haría sin ORM. Se utilizará una función createQueryBuilder() y knexquery.
+Cuando hay problemas con el orm y no se puede hacer una consulta SQL, se puede utilizar el Query Builder. Haremos las cosas manualmente, como se haría sin ORM. Se utilizará una función QueryBuilder()
+
+--------------YARN VS NPM-------------------
+yarn instala en paralelo npm secuencialmente por lo que yarn es más rápido

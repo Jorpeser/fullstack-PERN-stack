@@ -12,9 +12,6 @@
 // Main file del server
 import { COOKIE_NAME, __prod__ } from "./constants";
 
-//import { MikroORM } from "@mikro-orm/core";
-//import mikroConfig from "./mikro-orm.config"
-
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import 'reflect-metadata'; // Para type-graph-ql
@@ -26,32 +23,22 @@ import { ThreadResolver } from "./resolvers/thread";
 
 import Redis from 'ioredis';
 import session from 'express-session';
-//import { MyContext } from "./types"; 
 import connectRedis from 'connect-redis';
 
 // Plugin para el playground de apolo
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
-
 import cors from 'cors';
-
 import AppDataSource from "./type-orm.config";
-//import { sendEmail } from "./utils/sendEmail";
 
 const main = async () => {
 
-    //sendEmail('pepe@pepe.com', 'Hola, esto es un email de prueba');
-    //orm.em.nativeDelete(User, {}) // Borra todos los users
-
-    //const orm = await MikroORM.init(mikroConfig);
-    //await orm.getMigrator().up() // runs migrations Necesita explicacion
-
     //const conn = await AppDataSource.initialize().catch(err => console.log(err));
+    // Conexión con la base de datos
     await AppDataSource.initialize().catch(err => console.log(err));
     
     const app = express();
     
     const RedisStore = connectRedis(session);
-    //let RedisStore = require('connect-redis')(session); //-> Se convierte al import de arriba y se llama a la funcion con parametro session.
     const redis = new Redis({});
 
     redis.on('connect', (_) => {
@@ -102,7 +89,7 @@ const main = async () => {
     apolloServer.applyMiddleware({ app, cors: false });
     
     app.listen(4001, () => {
-        console.log('server started on localhost:4000')
+        console.log('server started on localhost:4001')
     })
     
 };

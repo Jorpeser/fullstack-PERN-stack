@@ -208,10 +208,8 @@ export class UserResolver {
             }
         }
         
-        //console.log('USER_ID ==== ' + user.id)
-        
         req.session.userId = user.id;
-        
+        // vvvvvvv Necesario? vvvvvvv       
         req.session.save(err => {
             if(err){
                 console.log(err)

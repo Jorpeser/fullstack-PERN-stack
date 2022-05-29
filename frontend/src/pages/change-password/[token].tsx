@@ -4,7 +4,7 @@ import { Formik, Form } from 'formik';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { InputField } from '../../components/InputField';
-import { Wrapper } from '../../components/Wrapper';
+import Wrapper from '../../components/Wrapper';
 import { useChangePasswordMutation } from '../../generated/graphql';
 import { toErrorMap } from '../../utils/toErrorMap';
 import { withUrqlClient } from 'next-urql';
