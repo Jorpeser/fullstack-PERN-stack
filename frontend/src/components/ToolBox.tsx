@@ -10,7 +10,7 @@ interface ToolBoxProps {
 }
 
 // Titulo editable
-// Boton para bloquear en el sitio
+// Limites del drag (dragConstraints https://www.framer.com/docs/gestures/)
 
 const ToolBox: React.FC<ToolBoxProps> = ({ children, ref, title = "" }) => {
     const [toolLocked, setToolLocked] = React.useState(true);
@@ -81,7 +81,7 @@ const ToolBox: React.FC<ToolBoxProps> = ({ children, ref, title = "" }) => {
                     <IconButton
                         w="13px" h="13px"
                         variant="ghost"
-                        aria-label="Drag lock/unlock"
+                        aria-label={toolLocked ? "Unlock tool for dragging." : "Lock tool on current place."}
                         onClick={() => setToolLocked(!toolLocked)}
                         icon={
                             toolLocked ? <LockIcon w="12px" h="12px" color="#787878" /> : <UnlockIcon w="12px" h="12px" color="#787878" />
