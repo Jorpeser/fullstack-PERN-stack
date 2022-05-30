@@ -1,7 +1,10 @@
+import { Box } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import React from "react";
 import Navbar from "../components/Navbar"
 import ToolBox from "../components/ToolBox";
+import ToolMenu from "../components/ToolMenu";
+import Pomodoro from "../components/tools/pomodoro";
 import  Wrapper from "../components/Wrapper";
 import { usePostsQuery } from "../generated/graphql";
 import { createUrqlClient } from "../utils/createUrqlClient";
@@ -16,8 +19,12 @@ const Index = () => {
         <>
             <Navbar />
             <Wrapper variant="small">
-                <ToolBox ref={reference} title="Pepe">{}</ToolBox>
+                <ToolBox ref={reference} title="Pepe">
+                    {}
+                </ToolBox>
             </Wrapper>
+            <Pomodoro />
+            <ToolMenu>{}</ToolMenu>
             {/* <br />
             {!data ? (
                 <div> Cargando... </div>

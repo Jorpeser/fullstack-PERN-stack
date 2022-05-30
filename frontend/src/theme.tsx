@@ -11,6 +11,18 @@ const breakpoints = createBreakpoints({
 })
 
 const theme = extendTheme({
+  styles: {
+    global: {
+      'body::-webkit-scrollbar': {
+        background: '#1a202c',
+        width:'13px' //#939393
+      },
+      'body::-webkit-scrollbar-thumb': {
+        background: 'black', //#939393
+        'border-radius':'15px'
+      }
+    }
+  },
   colors: {
     black: '#16161D',
   },

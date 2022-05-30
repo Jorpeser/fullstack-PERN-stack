@@ -4,13 +4,16 @@ import React from 'react'
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 import { isServer } from '../utils/isServer';
 
-interface NavbarProps {}
+interface NavbarProps {
+
+}
 
 const Navbar: React.FC<NavbarProps> = ({}) => {
     // Primer parámetro: datos y demás
     // Segundo parámetro: función para ejecutar query
     const [{data, fetching}] = useMeQuery({ pause: isServer()})
     const [{fetching: logoutFetching}, logout] = useLogoutMutation()
+    //const [menuOpened, setMenuOpened] = React.useState(false)
 
     let body = null;
 
@@ -42,9 +45,11 @@ const Navbar: React.FC<NavbarProps> = ({}) => {
         ); 
     }
 
-
     return (
         <Flex p={4} bg="black">
+            {/* <Flex>
+                <Button>Hola</Button>
+            </Flex> */}
             <Flex ml="auto">
                 {body}              
             </Flex>

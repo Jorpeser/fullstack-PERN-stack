@@ -15,14 +15,14 @@ interface ToolBoxProps {
 const ToolBox: React.FC<ToolBoxProps> = ({ children, ref, title = "" }) => {
     const [toolLocked, setToolLocked] = React.useState(true);
     return (
-        <Box
+        <Flex
             as={motion.div}
             drag={!toolLocked}
             dragConstraints={ref}
             dragMomentum={false}
             w="300px"
             minW="200px"
-            h="400px"
+            h="300px"
             minH="200px"
             mx="auto"
             bgColor="black"
@@ -30,6 +30,7 @@ const ToolBox: React.FC<ToolBoxProps> = ({ children, ref, title = "" }) => {
             borderRadius={12}
             resize={toolLocked ? "both" : "none"} 
             overflow="auto"
+            flexDirection={'column'}
         >
             <Flex
                 w="100%"
@@ -37,6 +38,7 @@ const ToolBox: React.FC<ToolBoxProps> = ({ children, ref, title = "" }) => {
                 bgColor="#202027"
                 alignItems="center" // Centra en Y
                 borderTopRadius="inherit"
+                flex='0 1 auto'
             >
                 <Flex
                     flex={1}
@@ -84,13 +86,17 @@ const ToolBox: React.FC<ToolBoxProps> = ({ children, ref, title = "" }) => {
                         aria-label={toolLocked ? "Unlock tool for dragging." : "Lock tool on current place."}
                         onClick={() => setToolLocked(!toolLocked)}
                         icon={
-                            toolLocked ? <LockIcon w="12px" h="12px" color="#787878" /> : <UnlockIcon w="12px" h="12px" color="#787878" />
+                            toolLocked ? 
+                            <LockIcon w="12px" h="12px" color="#787878" /> 
+                            : <UnlockIcon w="12px" h="12px" color="#787878" />
                         }
                     />
                 </Flex>
             </Flex>
-            {children}
-        </Box>
+            <Flex h='auto' flex='1 1 auto' justifyContent='center'>
+                {children}
+            </Flex>
+        </Flex>
     );
 }
 
